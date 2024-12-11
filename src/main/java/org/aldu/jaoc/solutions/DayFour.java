@@ -25,7 +25,7 @@ public class DayFour extends AbstractDay {
         }
 
         for (var dir : Direction.values()) {
-          if (findWord(row, col, dir, grid)) {
+          if (checkXmasWord(row, col, dir, grid)) {
             result++;
           }
         }
@@ -36,7 +36,27 @@ public class DayFour extends AbstractDay {
   }
 
   @Override
-  protected void taskTwo() {}
+  protected void taskTwo() {
+    var grid = FileUtils.readInput(getInputFileName());
+    var result = 0;
+    var rowCount = grid.size();
+    var colCount = grid.getFirst().length();
+    for (int row = 1; row < rowCount - 1; row++) {
+      var line = grid.get(row);
+      for (int col = 1; col < colCount - 1; col++) {
+        if (line.charAt(col) != 'A') {
+          continue;
+        }
+
+        if (checkDiagonal(row, col, Direction.UP_LEFT, Direction.DOWN_RIGHT, grid)
+            && checkDiagonal(row, col, Direction.UP_RIGHT, Direction.DOWN_LEFT, grid)) {
+          result++;
+        }
+      }
+    }
+
+    printResult(Task.ONE, result);
+  }
 
   private enum Direction {
     DOWN(0, 1),
@@ -55,7 +75,7 @@ public class DayFour extends AbstractDay {
     }
   }
 
-  private boolean findWord(int row, int col, Direction dir, List<String> grid) {
+  private boolean checkXmasWord(int row, int col, Direction dir, List<String> grid) {
     for (int i = 0; i < XMAS.length(); i++) {
       var currChar = XMAS.charAt(i);
       var x = col + i * dir.yOffset;
@@ -70,5 +90,19 @@ public class DayFour extends AbstractDay {
     }
 
     return true;
+  }
+
+  private boolean checkDiagonal(
+      int row, int col, Direction first, Direction second, List<String> grid) {
+    int x1, x2, y1, y2;
+
+    // First Diagonal
+    x1 = col + first.xOffset;
+    y1 = row + first.yOffset;
+    x2 = col + second.xOffset;
+    y2 = row + second.yOffset;
+    var firstChar = grid.get(y1).charAt(x1);
+    var secondChar = grid.get(y2).charAt(x2);
+    return (firstChar == 'M' && secondChar == 'S') || (firstChar == 'S' && secondChar == 'M');
   }
 }
