@@ -1,8 +1,6 @@
 package org.aldu.jaoc.solutions;
 
-/**
- * Base class providing minor utilities to simplify the implementation of the actual solutions.
- */
+/** Base class providing minor utilities to simplify the implementation of the actual solutions. */
 public abstract class AbstractDay {
   protected enum Task {
     ONE("task one"),
@@ -36,6 +34,10 @@ public abstract class AbstractDay {
 
   protected String getInputFileName() {
     return "inputs/%s/%s.in".formatted(getDay(), getDay());
+  }
+
+  protected String getExampleFileName() {
+    return "inputs/%s/example.in".formatted(getDay());
   }
 
   protected <T> void printResult(Task task, T result) {
