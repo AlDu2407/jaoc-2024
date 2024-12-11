@@ -23,4 +23,8 @@ public class FileUtils {
 
     return Collections.emptyList();
   }
+
+  public static String readInputAsLine(String fileName) {
+    return String.join("", readInput(fileName));
+  }
 }

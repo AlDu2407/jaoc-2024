@@ -41,7 +41,7 @@ public class DayOne extends AbstractDay {
     var first = new ArrayList<Integer>();
     var frequencies = new HashMap<Integer, Integer>();
     lines.stream()
-        .map(line -> Arrays.stream(line.split("   ")).map(Integer::parseInt).toList())
+        .map(line -> Arrays.stream(line.split(" {3}")).map(Integer::parseInt).toList())
         .filter(elements -> elements.size() == 2)
         .forEach(
             elements -> {
