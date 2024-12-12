@@ -1,6 +1,8 @@
 package org.aldu.jaoc.solutions;
 
 import java.util.List;
+
+import org.aldu.jaoc.utils.Direction;
 import org.aldu.jaoc.utils.FileUtils;
 
 public class DayFour extends AbstractDay {
@@ -56,23 +58,6 @@ public class DayFour extends AbstractDay {
     }
 
     printResult(Task.ONE, result);
-  }
-
-  private enum Direction {
-    DOWN(0, 1),
-    UP(0, -1),
-    LEFT(-1, 0),
-    RIGHT(1, 0),
-    DOWN_RIGHT(1, 1),
-    UP_RIGHT(1, -1),
-    DOWN_LEFT(-1, 1),
-    UP_LEFT(-1, -1);
-    private final int xOffset, yOffset;
-
-    Direction(int xOffset, int yOffset) {
-      this.xOffset = xOffset;
-      this.yOffset = yOffset;
-    }
   }
 
   private boolean checkXmasWord(int row, int col, Direction dir, List<String> grid) {
