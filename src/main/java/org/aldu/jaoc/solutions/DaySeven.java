@@ -7,7 +7,27 @@ import org.aldu.jaoc.utils.FileUtils;
 public class DaySeven extends AbstractDay {
   private enum Operation {
     PLUS,
-    MUL
+    MUL,
+    CONCAT;
+
+    public static Operation ofBinary(int val, int shift) {
+      return ((val >> shift) & 1) == 0 ? Operation.PLUS : Operation.MUL;
+    }
+
+    public static Operation ofTernary(int val, int shift) {
+      var value = val % 3;
+      var temp = val;
+      while (shift > 0) {
+        temp = (temp - value) / 3;
+        value = temp % 3;
+        shift--;
+      }
+      return switch (value) {
+        case 1 -> Operation.MUL;
+        case 2 -> Operation.CONCAT;
+        default -> Operation.PLUS;
+      };
+    }
   }
 
   private static class Calculation {
@@ -32,13 +52,43 @@ public class DaySeven extends AbstractDay {
       for (var i = 0; i < possibilities; i++) {
         var intermediateResult = arguments.getFirst();
         for (var j = 0; j < arguments.size() - 1; j++) {
-          var op = ((i >> j) & 1) == 0 ? Operation.PLUS : Operation.MUL;
+          var op = Operation.ofBinary(i, j);
           switch (op) {
             case PLUS -> {
               intermediateResult += arguments.get(j + 1);
             }
             case MUL -> {
               intermediateResult *= arguments.get(j + 1);
+            }
+          }
+        }
+        if (intermediateResult == result) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    private boolean isExtendedSolvable() {
+      // Same logic as before but we have to use a ternary number represented as a decimal:
+      // e.g. 0 => '+', 1 => '*', 2 => '||'; therefore 012120 => `+ * || * || +`
+      // arguments 7 => arg1 + arg2 * arg3 || arg4 * arg5 || arg6 + arg7
+      var possibilities = Math.pow(3, arguments.size() - 1);
+      for (var i = 0; i < possibilities; i++) {
+        var intermediateResult = arguments.getFirst();
+        for (var j = 0; j < arguments.size() - 1; j++) {
+          var op = Operation.ofTernary(i, j);
+          switch (op) {
+            case PLUS -> {
+              intermediateResult += arguments.get(j + 1);
+            }
+            case MUL -> {
+              intermediateResult *= arguments.get(j + 1);
+            }
+            case CONCAT -> {
+              intermediateResult =
+                  Long.parseLong("%s%s".formatted(intermediateResult, arguments.get(j + 1)));
             }
           }
         }
@@ -60,6 +110,11 @@ public class DaySeven extends AbstractDay {
               .toList();
       return new Calculation(result, arguments);
     }
+
+    @Override
+    public String toString() {
+      return "Calculation{" + "result=" + result + ", arguments=" + arguments + '}';
+    }
   }
 
   @Override
@@ -80,5 +135,14 @@ public class DaySeven extends AbstractDay {
   }
 
   @Override
-  protected void taskTwo() {}
+  protected void taskTwo() {
+    var lines = FileUtils.readInput(getInputFileName());
+    var result =
+        lines.stream()
+            .map(Calculation::parseInput)
+            .filter(Calculation::isExtendedSolvable)
+            .map(Calculation::result)
+            .reduce(0L, Long::sum);
+    printResult(Task.TWO, result);
+  }
 }
