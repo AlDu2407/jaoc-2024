@@ -2,7 +2,7 @@ package org.aldu.jaoc.utils;
 
 import java.util.Objects;
 
-public record PosDir(Position pos, Direction dir) {
+public record PosDir(Vec2 pos, Direction dir) {
   public PosDir calculate() {
     var newPos = pos.calculate(dir);
     return new PosDir(newPos, dir);

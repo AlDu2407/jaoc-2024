@@ -7,5 +7,6 @@ public static void main(String[] _args){
   //  new DayFour().executeTasks();
   //  new DayFive().executeTasks();
   //  new DaySix().executeTasks();
-  new DaySeven().executeTasks();
+  //  new DaySeven().executeTasks();
+  new DayEight().executeTasks();
 }
