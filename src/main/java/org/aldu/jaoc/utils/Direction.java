@@ -1,5 +1,7 @@
 package org.aldu.jaoc.utils;
 
+import java.util.EnumSet;
+
 public enum Direction {
   DOWN(0, 1),
   UP(0, -1),
@@ -27,5 +29,9 @@ public enum Direction {
       case DOWN_LEFT -> UP_LEFT;
       case UP_LEFT -> UP_RIGHT;
     };
+  }
+
+  public static EnumSet<Direction> compassDirections() {
+    return EnumSet.of(UP, RIGHT, DOWN, LEFT);
   }
 }

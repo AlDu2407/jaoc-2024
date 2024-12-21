@@ -40,6 +40,10 @@ public abstract class AbstractDay {
     return "inputs/%s/example.in".formatted(getDay());
   }
 
+  protected String getExampleFileName(int no) {
+    return "inputs/%s/example%s.in".formatted(getDay(), no);
+  }
+
   protected <T> void printResult(Task task, T result) {
     System.out.printf("The result for %s is %s\n", task, result);
   }
